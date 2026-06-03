@@ -595,6 +595,97 @@
     color: var(--muted);
   }
 
+  /* LAUNCH COUNTDOWN */
+  .launch-timer {
+    margin: 36px 0 0;
+  }
+  .timer-label {
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .timer-blocks {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .timer-block {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px 10px;
+    min-width: 68px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(26,18,8,0.06);
+  }
+  .timer-block .t-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--dark);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .timer-block .t-unit {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .timer-launched {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    padding: 12px 0;
+  }
+
+  /* DELETE ACCOUNT */
+  .delete-section {
+    padding: 60px 48px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  .delete-section h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 12px;
+  }
+  .delete-section p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto 8px;
+  }
+  .delete-section a.delete-email {
+    color: var(--primary);
+    text-decoration: none;
+  }
+  .delete-section a.delete-email:hover { text-decoration: underline; }
+  .delete-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 28px;
+    border: 1.5px solid #ef4444;
+    border-radius: 100px;
+    color: #ef4444;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .delete-btn:hover { background: rgba(239,68,68,0.06); }
+
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
@@ -631,7 +722,7 @@
 
 <section class="hero">
   <div class="hero-content">
-    <div class="hero-badge">Now available on Android</div>
+    <div class="hero-badge">Coming soon to Android</div>
     <div class="hero-malayalam">പഠിക്കാം, ജയിക്കാം</div>
     <h1>Ace Your <span>PSC & SSC</span> Exams</h1>
     <p>Practice with thousands of questions in English and Malayalam. Track your progress, compete on leaderboards, and identify your weak areas.</p>
@@ -643,6 +734,17 @@
       <a href="#features" class="btn-secondary">
         Learn More ↓
       </a>
+    </div>
+
+    <!-- Launch Countdown -->
+    <div class="launch-timer">
+      <div class="timer-label">🚀 Launching on Play Store in</div>
+      <div class="timer-blocks" id="timerBlocks">
+        <div class="timer-block"><div class="t-num" id="tDays">15</div><div class="t-unit">Days</div></div>
+        <div class="timer-block"><div class="t-num" id="tHours">00</div><div class="t-unit">Hours</div></div>
+        <div class="timer-block"><div class="t-num" id="tMins">00</div><div class="t-unit">Mins</div></div>
+        <div class="timer-block"><div class="t-num" id="tSecs">00</div><div class="t-unit">Secs</div></div>
+      </div>
     </div>
   </div>
 
@@ -767,16 +869,50 @@
   </div>
 </section>
 
+<!-- Account Deletion -->
+<section id="delete-account" class="delete-section">
+  <h2>Delete Your Account</h2>
+  <p>To request deletion of your Padipp account and all associated data (profile, scores, quiz history), send an email to <a href="mailto:support@padipp.app" class="delete-email">support@padipp.app</a> with the subject line <strong>"Delete My Account"</strong>.</p>
+  <p>We will permanently delete your data within 7 days of receiving your request.</p>
+  <a class="delete-btn" href="mailto:support@padipp.app?subject=Delete%20My%20Account">Request Account Deletion</a>
+</section>
+
 <footer>
   <div class="footer-logo">Padipp</div>
   <ul class="footer-links">
     <li><a href="#features">Features</a></li>
     <li><a href="#exams">Exams</a></li>
     <li><a href="privacy.html">Privacy Policy</a></li>
+    <li><a href="#delete-account">Delete Account</a></li>
     <li><a href="mailto:support@padipp.app">support@padipp.app</a></li>
   </ul>
   <div class="footer-copy">© 2026 Padipp. All rights reserved.</div>
 </footer>
+
+<script>
+(function () {
+  var launch = new Date('2026-06-18T00:00:00+02:00');
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function tick() {
+    var diff = launch - new Date();
+    if (diff <= 0) {
+      var b = document.getElementById('timerBlocks');
+      if (b) b.innerHTML = '<div class="timer-launched">🎉 Now Live on Play Store!</div>';
+      return;
+    }
+    var d = document.getElementById('tDays'),
+        h = document.getElementById('tHours'),
+        m = document.getElementById('tMins'),
+        s = document.getElementById('tSecs');
+    if (d) d.textContent = pad(Math.floor(diff / 86400000));
+    if (h) h.textContent = pad(Math.floor((diff % 86400000) / 3600000));
+    if (m) m.textContent = pad(Math.floor((diff % 3600000) / 60000));
+    if (s) s.textContent = pad(Math.floor((diff % 60000) / 1000));
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
 
 </body>
 </html>
